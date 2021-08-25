@@ -28,6 +28,12 @@ export const update = async (user) => {
 
 export const deleteById = async (id) => {
     const User = models.User;
-    const result = await User.deleteOne({ _id: id });
-    return result;
+    const model = await User.findById(id);
+    if (model) {
+        const result = await User.deleteOne({ _id: id });
+        return result;
+    } else {
+        return new Error(`User not found by the ID: ${id}`)
+    }
+
 }

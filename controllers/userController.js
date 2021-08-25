@@ -22,11 +22,12 @@ const putHandler = async (req, res) => {
 
 const deleteHandler = async (req, res) => {
     const id = req.params.id;
-    if (!id) {
-        res.status(400).send("ID not provided");
+    const result = await deleteById(id);
+    if (result instanceof Error) {
+        res.status(404).send(result.message)
+    } else {
+        res.status(200).send("User deleted");
     }
-    await deleteById(id)
-    res.status(200).send("User deleted");
 }
 
 

@@ -1,2 +1,4 @@
 guide.txt
 node_modules
+.vscode
+utils
