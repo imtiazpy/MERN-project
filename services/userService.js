@@ -1,6 +1,13 @@
 import models from "../models";
 import { BadRequest, NotFound } from "../utils/errors";
 
+
+export const getAllUsers = async () => {
+    const User = models.User;
+    const users = await User.find();
+    return users;
+}
+
 export const saveUser = async (user) => {
     const username = user.username;
     const User = models.User;
@@ -12,14 +19,8 @@ export const saveUser = async (user) => {
         const savedUser = await model.save();
         return savedUser;
     }
-
 }
 
-export const getAllUsers = async () => {
-    const User = models.User;
-    const users = await User.find();
-    return users;
-}
 
 export const update = async (user) => {
     const id = user._id;
