@@ -1,10 +1,18 @@
 import models from "../models";
-import { NotFound } from "../utils/errors";
+import { BadRequest, NotFound } from "../utils/errors";
 
 export const saveUser = async (user) => {
-    const model = new models.User({ username: user.username, createdAt: new Date() });
-    const savedUser = await model.save();
-    return savedUser;
+    const username = user.username;
+    const User = models.User;
+    const isExist = await User.findOne({ username: username })
+    if (isExist) {
+        return new BadRequest(`User already exists with username: ${username}`)
+    } else {
+        const model = new models.User({ username: user.username, createdAt: new Date() });
+        const savedUser = await model.save();
+        return savedUser;
+    }
+
 }
 
 export const getAllUsers = async () => {

@@ -11,7 +11,13 @@ const getHandler = async (req, res) => {
 const postHandler = async (req, res) => {
     const body = req.body;
     const user = await saveUser(body)
-    res.status(201).send(user._id)
+    if (user instanceof Error) {
+        const errCode = user.getCode()
+        res.status(errCode).send(user.message)
+    } else {
+        res.status(201).send(user._id)
+    }
+
 }
 
 const putHandler = async (req, res) => {
