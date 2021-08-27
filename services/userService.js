@@ -8,17 +8,23 @@ export const getAllUsers = async () => {
     return users;
 }
 
+// export const saveUser = async (user) => {
+//     const username = user.username;
+//     const User = models.User;
+//     const exist = await User.findOne({ username: username })
+//     if (!exist) {
+//         const model = new models.User({ username: username, createdAt: new Date() });
+//         const savedUser = await model.save();
+//         return savedUser;
+//     } else {
+//         throw new BadRequest(`User already exists with username: ${username}`)
+//     }
+// }
+
 export const saveUser = async (user) => {
-    const username = user.username;
-    const User = models.User;
-    const exist = await User.findOne({ username: username })
-    if (!exist) {
-        const model = new models.User({ username: username, createdAt: new Date() });
-        const savedUser = await model.save();
-        return savedUser;
-    } else {
-        throw new BadRequest(`User already exists with username: ${username}`)
-    }
+    const model = models.User(user);
+    const saveUser = await model.save();
+    return saveUser;
 }
 
 

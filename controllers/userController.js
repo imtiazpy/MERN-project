@@ -1,5 +1,7 @@
 import express from "express";
 import { saveUser, getAllUsers, update, deleteById } from "../services/userService"
+import validators from "../models/view-models";
+import { handleValidation } from "../middlewares/handlevalidations";
 
 const router = express.Router();
 
@@ -16,13 +18,6 @@ const postHandler = async (req, res, next) => {
     try {
         const body = req.body;
         const user = await saveUser(body)
-        // if (user instanceof Error) {
-        //     // const errCode = user.getCode()
-        //     // res.status(errCode).send(user.message)
-        //     return next(user, req, res)
-        // } else {
-        //     res.status(201).send(user._id)
-        // }
         res.status(201).send(user._id)
     } catch (error) {
         return next(error, req, res);
@@ -43,14 +38,6 @@ const putHandler = async (req, res, next) => {
 const deleteHandler = async (req, res, next) => {
     try {
         const id = req.params.id;
-        // const result = await deleteById(id);
-        // if (result instanceof Error) {
-        //     // const errCode = result.getCode()
-        //     // res.status(errCode).send(result.message)
-        //     return next(result, req, res);
-        // } else {
-        //     res.status(200).send("User deleted");
-        // }
         await deleteById(id);
         res.status(200).send("User deleted");
     } catch (error) {
@@ -60,7 +47,7 @@ const deleteHandler = async (req, res, next) => {
 
 
 router.get('/', getHandler)
-router.post('/', postHandler)
+router.post('/', handleValidation(validators.userSchemaValidate), postHandler)
 router.put('/', putHandler)
 router.delete('/:id', deleteHandler)
 
