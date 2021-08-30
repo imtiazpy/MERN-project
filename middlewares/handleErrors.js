@@ -1,12 +1,12 @@
 import { GeneralError } from "../utils/errors";
 
 export const handleErrors = async (err, req, res, next) => {
+    let errCode = 500;
     if (err instanceof GeneralError) {
-        const errCode = err.getCode();
-        return res.status(errCode).json({ name: err.name, message: err.message });
+        errCode = err.getCode();
     }
-
-    return res.status(500).json({
-        name: "Internal Server Error", message: err.message
+    let correlationId = req.headers['x-correlation-id']
+    return res.status(errCode).json({
+        correlationId: correlationId, message: err.message
     });
 }
